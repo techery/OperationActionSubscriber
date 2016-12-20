@@ -7,7 +7,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "io.github.techery.operationsubscriber"
+        applicationId "io.techery.operationsubscriber"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1
