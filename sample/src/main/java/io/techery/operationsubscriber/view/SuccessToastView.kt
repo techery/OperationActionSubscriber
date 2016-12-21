@@ -5,7 +5,7 @@ import android.support.annotation.StringRes
 import android.widget.Toast
 import io.techery.janet.operationsubscriber.view.SuccessView
 
-class SuccessToastView<in T>(private val context: Context,
+class SuccessToastView<T>(private val context: Context,
                              private val messageProvider: (T) -> String) : SuccessView<T> {
 
     constructor(context: Context, @StringRes msgRes: Int) : this(context, { context.getString(msgRes) })

@@ -1,36 +1,17 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
+apply plugin: 'java'
 apply plugin: 'com.github.dcendents.android-maven'
 
-group='io.techery.operation-subscriber'
+group = 'io.techery.janet.operation-subscriber'
 
-android {
-    compileSdkVersion 24
-    buildToolsVersion "25.0.1"
-    defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 24
-        versionCode 1
-        versionName "0.0.1"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
-    }
+compileJava {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
+    compile 'org.jetbrains:annotations-java5:15.0'
     compile "com.github.techery:janet:1.0.6"
 
-    testCompile 'com.github.techery:janet-kotlin:0.0.1'
     testCompile 'com.github.techery:janet-command:1.0.3'
 
     testCompile 'junit:junit:4.12'
@@ -39,7 +20,4 @@ dependencies {
     testCompile('com.nhaarman:mockito-kotlin:0.6.0') {
         exclude group: 'org.mockito', module: 'mockito-core'
     }
-}
-repositories {
-    mavenCentral()
 }

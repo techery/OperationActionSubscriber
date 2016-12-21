@@ -1,12 +1,12 @@
 package io.techery.operationsubscriber
 
 import android.util.Log
-import io.techery.janet.operationsubscriber.OperationActionSubscriber
-import io.techery.janet.operationsubscriber.view.OperationView
 import io.techery.janet.ActionPipe
 import io.techery.janet.CommandActionService
 import io.techery.janet.kotlin.createPipe
 import io.techery.janet.kotlin.janet
+import io.techery.janet.operationsubscriber.OperationActionSubscriber
+import io.techery.janet.operationsubscriber.view.OperationView
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -33,7 +33,7 @@ class ExamplePresenter {
                         .onFail { longRunningValueCommand, throwable ->
                             Log.d(TAG, "onFail " + longRunningValueCommand.javaClass.name)
                         }
-                        .wrap())
+                        .create())
     }
 
     fun detachView() {
