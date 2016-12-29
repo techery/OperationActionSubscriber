@@ -12,6 +12,8 @@ public class OperationActionSubscriber<T> {
     @NotNull
     private OperationView<T> operationView;
 
+    private boolean repeatable;
+
     @Nullable
     private Action1<T> onStartAction;
     @Nullable
@@ -19,14 +21,22 @@ public class OperationActionSubscriber<T> {
     @Nullable
     private Action1<T> onSuccessAction;
 
+    @Nullable
     private Action2<T, Throwable> onFailAction;
 
-    public static <T> OperationActionSubscriber<T> forView(OperationView<T> operationView) {
-        return new OperationActionSubscriber<>(operationView);
+    public static <T> OperationActionSubscriber<T> forView(OperationView<T> operationView,
+                                                           boolean repeatable) {
+        return new OperationActionSubscriber<>(operationView, repeatable);
     }
 
-    private OperationActionSubscriber(@NotNull OperationView<T> operationView) {
+    public static <T> OperationActionSubscriber<T> forView(OperationView<T> operationView) {
+        return new OperationActionSubscriber<>(operationView, true);
+    }
+
+    private OperationActionSubscriber(@NotNull OperationView<T> operationView,
+                                      boolean repeatable) {
         this.operationView = operationView;
+        this.repeatable = repeatable;
     }
 
     public OperationActionSubscriber<T> onStart(@Nullable Action1<T> action) {
@@ -54,6 +64,10 @@ public class OperationActionSubscriber<T> {
                 .onStart(new Action1<T>() {
                     @Override
                     public void call(T t) {
+                        if (repeatable) {
+                            hideNotifications();
+                        }
+
                         operationView.showProgress(t);
 
                         if (onStartAction != null) {
@@ -91,5 +105,14 @@ public class OperationActionSubscriber<T> {
                         }
                     }
                 });
+    }
+
+    private void hideNotifications() {
+        if (operationView.isSuccessVisible()) {
+            operationView.hideSuccess();
+        }
+        if (operationView.isErrorVisible()) {
+            operationView.hideError();
+        }
     }
 }

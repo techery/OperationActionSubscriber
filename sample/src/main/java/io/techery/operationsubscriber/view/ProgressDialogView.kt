@@ -8,6 +8,10 @@ class ProgressDialogView<T>(private val dialog: ProgressDialog) : ProgressView<T
         dialog.show()
     }
 
+    override fun isProgressVisible(): Boolean {
+        return dialog.isShowing
+    }
+
     override fun hideProgress() {
         dialog.dismiss()
     }
