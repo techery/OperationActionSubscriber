@@ -35,7 +35,8 @@ Lets walk through common steps to set all up:
   ```
 4. That's it. Enjoy execution commands using Janet;
 
-##Benefits: the main benefits which is provided is to avoiding "copy-paste" issue in UI, you can implement your UI states for progress/success/error once and you can use it everywhere.
+##Benefit:
+The main benefits which is provided by this library - avoid "copy-paste" issue in UI, you can implement your UI states for progress/success/error once and you can use it everywhere.
 
 Grab via Maven
 ```xml
