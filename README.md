@@ -1,5 +1,3 @@
-# OperationActionSubscriber
-
 ## Introduction
 This library is a helper to execute action(command) using Janet lib
   
