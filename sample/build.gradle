@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "io.techery.operationsubscriber"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
 
@@ -30,22 +30,21 @@ android {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
-
+    compile 'com.android.support:recyclerview-v7:25.1.0'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.github.techery:janet:1.0.6'
     compile 'com.github.techery:janet-kotlin:0.0.1'
     compile 'com.github.techery:janet-command:1.0.3'
-    compile "com.github.techery.janet-converters:gson:1.0.1"
-    compile "com.github.techery.janet-http:service:1.0.9"
-    compile "com.github.techery.janet-http:client-okhttp3:1.0.9"
+    compile 'com.github.techery.janet-converters:gson:1.0.1'
+    compile 'com.github.techery.janet-http:service:1.0.9'
+    compile 'com.github.techery.janet-http:client-okhttp3:1.0.9'
     kapt "com.github.techery.janet-http:service-compiler:1.0.9"
-
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
-    compile (project(':library')) {
+    compile(project(':library')) {
         exclude group: 'org.jetbrains', module: 'annotations-java5'
     }
 }

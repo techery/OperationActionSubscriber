@@ -30,7 +30,7 @@ public class OperationActionSubscriber<T> {
     }
 
     public static <T> OperationActionSubscriber<T> forView(OperationView<T> operationView) {
-        return new OperationActionSubscriber<>(operationView, true);
+        return forView(operationView, true);
     }
 
     private OperationActionSubscriber(@NotNull OperationView<T> operationView,

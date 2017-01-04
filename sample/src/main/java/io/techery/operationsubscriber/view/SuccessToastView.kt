@@ -8,7 +8,7 @@ import io.techery.janet.operationsubscriber.view.SuccessView
 
 class SuccessToastView<T>(private val context: Context,
                           private val messageProvider: (T) -> String) : SuccessView<T> {
-    private lateinit var toast: Toast
+    private var toast: Toast? = null
 
     constructor(context: Context, @StringRes msgRes: Int) : this(context, { context.getString(msgRes) })
 
@@ -16,14 +16,14 @@ class SuccessToastView<T>(private val context: Context,
 
     override fun showSuccess(action: T) {
         toast = Toast.makeText(context.applicationContext, messageProvider(action), Toast.LENGTH_SHORT)
-        toast.show()
+        toast!!.show()
     }
 
     override fun isSuccessVisible(): Boolean {
-        return toast.view.visibility == View.VISIBLE
+        return toast?.view?.visibility == View.VISIBLE
     }
 
     override fun hideSuccess() {
-        toast.cancel()
+        toast?.cancel()
     }
 }

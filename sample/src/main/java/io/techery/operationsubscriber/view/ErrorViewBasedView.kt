@@ -3,7 +3,7 @@ package io.techery.operationsubscriber.view
 import android.view.View
 import android.widget.TextView
 import io.techery.janet.operationsubscriber.view.ErrorView
-import io.techery.operationsubscriber.ErrorMessageHandler
+import io.techery.operationsubscriber.ui.ErrorMessageHandler
 
 class ErrorViewBasedView<T>(private val errorMessageHandler: ErrorMessageHandler,
                             private val view: TextView) : ErrorView<T> {

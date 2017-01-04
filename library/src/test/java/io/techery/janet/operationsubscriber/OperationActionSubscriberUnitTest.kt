@@ -1,8 +1,9 @@
 package io.techery.janet.operationsubscriber
 
 import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.isA
 import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import io.techery.janet.ActionPipe
 import io.techery.janet.Command
 import io.techery.janet.CommandActionService
@@ -16,30 +17,34 @@ import io.techery.janet.operationsubscriber.view.ProgressView
 import io.techery.janet.operationsubscriber.view.SuccessView
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.runners.MockitoJUnitRunner
+import rx.schedulers.Schedulers
 
+@RunWith(MockitoJUnitRunner::class)
 class OperationActionSubscriberUnitTest {
     private val janetInstance: Janet = janet { addService(CommandActionService()) }
 
     private lateinit var testCommandPipe: ActionPipe<TestValueCommand>
 
-    private lateinit var mockedProgressView: ProgressView<TestValueCommand>
-    private lateinit var mockedSuccessView: SuccessView<TestValueCommand>
-    private lateinit var mockedErrorView: ErrorView<TestValueCommand>
+    @Mock
+    lateinit var mockedProgressView: ProgressView<TestValueCommand>
+    @Mock
+    lateinit var mockedSuccessView: SuccessView<TestValueCommand>
+    @Mock
+    lateinit var mockedErrorView: ErrorView<TestValueCommand>
 
     private lateinit var operationActionSubscriber: OperationActionSubscriber<TestValueCommand>
 
     @Before
     fun setUp() {
-        mockedProgressView = mock()
-        mockedSuccessView = mock()
-        mockedErrorView = mock()
-
         operationActionSubscriber = OperationActionSubscriber.forView(ComposableOperationView(
                 mockedProgressView,
                 mockedSuccessView,
                 mockedErrorView
         ))
-        testCommandPipe = janetInstance.createPipe()
+        testCommandPipe = janetInstance.createPipe(Schedulers.immediate())
     }
 
     @Test
@@ -47,9 +52,9 @@ class OperationActionSubscriberUnitTest {
     fun successViewTest() {
         performOperation { TEST_VALUE }
 
-        verify(mockedProgressView).showProgress(any())
+        verify(mockedProgressView).showProgress(isA())
         verify(mockedProgressView).hideProgress()
-        verify(mockedSuccessView).showSuccess(any())
+        verify(mockedSuccessView).showSuccess(isA())
     }
 
     @Test
@@ -57,16 +62,27 @@ class OperationActionSubscriberUnitTest {
     fun errorViewTest() {
         performOperation { throw Exception("FAIL") }
 
-        verify(mockedProgressView).showProgress(any())
+        verify(mockedProgressView).showProgress(isA())
         verify(mockedProgressView).hideProgress()
-        verify(mockedErrorView).showError(any(), any())
+        verify(mockedErrorView).showError(isA(), isA())
     }
 
     @Test
     @Throws(Exception::class)
     fun repeatableSuccessViewTest() {
-        performOperation { TEST_VALUE }
+        whenever(mockedSuccessView.isSuccessVisible).thenReturn(true)
 
+        performOperation { TEST_VALUE } // repeat the same operation to hide previous state
+        verify(mockedSuccessView).hideSuccess()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun repeatableErrorViewTest() {
+        whenever(mockedErrorView.isErrorVisible).thenReturn(true)
+
+        performOperation { TEST_VALUE }
+        verify(mockedErrorView).hideError()
     }
 
     private fun performOperation(body: () -> String) {
@@ -75,8 +91,7 @@ class OperationActionSubscriberUnitTest {
                 .subscribe(operationActionSubscriber.create())
     }
 
-    @CommandAction
-    private class TestValueCommand(private val body: () -> String) : Command<String>() {
+    @CommandAction open class TestValueCommand(private val body: () -> String) : Command<String>() {
         override fun run(callback: CommandCallback<String>?) {
             Thread.sleep(100)
             callback?.onSuccess(body())
