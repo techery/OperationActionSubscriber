@@ -1,6 +1,5 @@
 package io.techery.janet.operationsubscriber
 
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.isA
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
