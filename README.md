@@ -1,11 +1,13 @@
 ## Motivation
 
+
 ## Introduction
-This library is a helper to show operation execution steps using Janet lib
+This library is a helper to show operation execution steps using `Janet` lib
   
-  * Library has 3 common interfaces to achive progress/success/error states during execution:
-    `ProgressView, SuccessView, ErrorView`
-  To have a single entry point library has general interface `OperationView` (you can implement it directly if you need)
+  * In accordance to the structure of `Janet` library execution, it has 3 common interfaces to handle operation states: `ActionState.Progress, ActionState.Success, ActionState.Error`
+    It includes states of operation execution they are: in progress - supported by the `ProgressView` inteface, success supported by the `SuccessView` interface and error state - supported by the `ErrorView` interface. The library helps to handle all of the above states and show them on the UI impelementation of your choice. These interfaces tell you what contract you must perform for operation states to be handled properly.
+  
+  * These 3 interface describe concrete parts of progress of operations and combined, these 3 interfaces make up operation view. The developer can make his own realisation as this is an interface, but the library offers it's own common realisation (`CompositeOperationView`) if you wish to you use it.
 
 Lets walk through common steps to set all up: 
     
@@ -16,14 +18,14 @@ Lets walk through common steps to set all up:
   CompositeOperationView view = new CompositeOperationView(ProgressViewImpl, SuccessViewImpl, ErrorViewImpl);
   ```
 
-3. To subscribe on Janet's action states - janet uses `ActionStateSubscriber` class, library has it's on wrapper around this class - `OperationActionSubscriber`, so we have to attach view to this class:
+3. To subscribe on Janet's action states - janet uses `ActionStateSubscriber` class, library has it's on wrapper around this class - `OperationActionSubscriber`, so we have to attach OperationView object to this class:
   
   ```java
   someOperationActionPipe.observe()
       .subscribe(OperationActionSubscriber.forView(operationView())
           .onStart(...)
           .onProgress(...)
-	  .onSuccess(...)
+	      .onSuccess(...)
           .onFail(...)
         .create()
       );
