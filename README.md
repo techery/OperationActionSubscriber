@@ -1,14 +1,16 @@
+## Motivation
+
 ## Introduction
-This library is a helper to execute action(command) using Janet lib
+This library is a helper to show operation execution steps using Janet lib
   
   * Library has 3 common interfaces to achive progress/success/error states during execution:
     `ProgressView, SuccessView, ErrorView`
-  To have a single entry point library has general interface `java OperationView` (you can implement it directly if you need)
+  To have a single entry point library has general interface `OperationView` (you can implement it directly if you need)
 
 Lets walk through common steps to set all up: 
     
-1. Create you own implementation of interfaces mentioned above (ProgressView, SuccessView, ErrorView);
-2. Build `java CompositeOperationView` object like:
+1. Create your own implementation of interfaces mentioned above `(ProgressView, SuccessView, ErrorView)`;
+2. Build `CompositeOperationView` object like:
 
   ```java
   CompositeOperationView view = new CompositeOperationView(ProgressViewImpl, SuccessViewImpl, ErrorViewImpl);
@@ -21,6 +23,7 @@ Lets walk through common steps to set all up:
       .subscribe(OperationActionSubscriber.forView(operationView())
           .onStart(...)
           .onProgress(...)
+	  .onSuccess(...)
           .onFail(...)
         .create()
       );
@@ -28,13 +31,15 @@ Lets walk through common steps to set all up:
       ...
       
   public OperationView<SomeOperation> operationView() {
-      return CompositeOperationView(...);
+      return new CompositeOperationView(...);
   }
   ```
 4. That's it. Enjoy execution commands using Janet;
 
 ##Benefit:
 The main benefits which is provided by this library - avoid "copy-paste" issue in UI, you can implement your UI states for progress/success/error once and you can use it everywhere.
+
+##Download
 
 Grab via Maven
 ```xml
