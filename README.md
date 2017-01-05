@@ -1,3 +1,5 @@
+[![](https://www.jitpack.io/v/techery/OperationActionSubscriber.svg)](https://www.jitpack.io/#techery/OperationActionSubscriber)
+
 # Motivation
    Almost every application contains operations that are executed during the its work, such as access to server, getting info from server, working with databases. To resolve such operations, we show the user notifications regarding the progress of this operation and its result. If the application is big, we show such kind of notifications many times, the code that is responsible for showing these notifications is replicated. Our library reduces the amount of code and simplifies it by replacing such basic actions as operations. 
    
@@ -86,5 +88,3 @@ dependencies {
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-[![](https://www.jitpack.io/v/techery/OperationActionSubscriber.svg)](https://www.jitpack.io/#techery/OperationActionSubscriber)
