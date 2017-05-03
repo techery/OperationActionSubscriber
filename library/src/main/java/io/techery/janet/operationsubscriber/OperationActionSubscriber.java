@@ -17,7 +17,7 @@ public class OperationActionSubscriber<T> {
     @Nullable
     private Action1<T> onStartAction;
     @Nullable
-    private Action1<T> onProgressAction;
+    private Action2<T, Integer> onProgressAction;
     @Nullable
     private Action1<T> onSuccessAction;
 
@@ -44,7 +44,7 @@ public class OperationActionSubscriber<T> {
         return this;
     }
 
-    public OperationActionSubscriber<T> onProgress(@Nullable Action1<T> action) {
+    public OperationActionSubscriber<T> onProgress(@Nullable Action2<T, Integer> action) {
         this.onProgressAction = action;
         return this;
     }
@@ -68,8 +68,6 @@ public class OperationActionSubscriber<T> {
                             hideNotifications();
                         }
 
-                        operationView.showProgress(t);
-
                         if (onStartAction != null) {
                             onStartAction.call(t);
                         }
@@ -78,8 +76,13 @@ public class OperationActionSubscriber<T> {
                 .onProgress(new Action2<T, Integer>() {
                     @Override
                     public void call(T t, Integer integer) {
+                        if (!operationView.isProgressVisible()) {
+                            operationView.showProgress(t);
+                        }
+                        operationView.onProgressChanged(integer);
+
                         if (onProgressAction != null) {
-                            onProgressAction.call(t);
+                            onProgressAction.call(t, integer);
                         }
                     }
                 })

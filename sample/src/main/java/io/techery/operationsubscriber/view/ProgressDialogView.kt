@@ -15,4 +15,7 @@ class ProgressDialogView<T>(private val dialog: ProgressDialog) : ProgressView<T
     override fun hideProgress() {
         dialog.dismiss()
     }
+
+    override fun onProgressChanged(progress: Int) {
+    }
 }
