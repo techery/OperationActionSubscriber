@@ -6,4 +6,6 @@ public interface ProgressView<T> {
     boolean isProgressVisible();
 
     void hideProgress();
+
+    void onProgressChanged(int progress);
 }
