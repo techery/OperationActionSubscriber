@@ -57,7 +57,9 @@ public class ComposableOperationView<T> implements OperationView<T> {
 
     @Override
     public void onProgressChanged(int progress) {
-
+        if (progressView != null) {
+            progressView.onProgressChanged(progress);
+        }
     }
 
     public void hideProgress() {
