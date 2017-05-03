@@ -1,6 +1,5 @@
 package io.techery.janet.operationsubscriber
 
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.isA
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -53,6 +52,7 @@ class OperationActionSubscriberUnitTest {
         performOperation { TEST_VALUE }
 
         verify(mockedProgressView).showProgress(isA())
+        verify(mockedProgressView).onProgressChanged(0)
         verify(mockedProgressView).hideProgress()
         verify(mockedSuccessView).showSuccess(isA())
     }
@@ -63,6 +63,7 @@ class OperationActionSubscriberUnitTest {
         performOperation { throw Exception("FAIL") }
 
         verify(mockedProgressView).showProgress(isA())
+        verify(mockedProgressView).onProgressChanged(0)
         verify(mockedProgressView).hideProgress()
         verify(mockedErrorView).showError(isA(), isA())
     }
@@ -93,6 +94,7 @@ class OperationActionSubscriberUnitTest {
 
     @CommandAction open class TestValueCommand(private val body: () -> String) : Command<String>() {
         override fun run(callback: CommandCallback<String>?) {
+            callback?.onProgress(0)
             Thread.sleep(100)
             callback?.onSuccess(body())
         }
