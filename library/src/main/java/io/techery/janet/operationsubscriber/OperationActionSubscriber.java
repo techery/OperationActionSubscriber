@@ -71,6 +71,12 @@ public class OperationActionSubscriber<T> {
                         if (onStartAction != null) {
                             onStartAction.call(t);
                         }
+                        if (!operationView.isProgressVisible()) {
+                            operationView.showProgress(t);
+                        }
+                        if (onProgressAction != null) {
+                            onProgressAction.call(t, 0);
+                        }
                     }
                 })
                 .onProgress(new Action2<T, Integer>() {
