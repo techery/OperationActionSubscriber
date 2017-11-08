@@ -1,5 +1,6 @@
 package io.techery.janet.operationsubscriber
 
+import com.nhaarman.mockito_kotlin.atLeastOnce
 import com.nhaarman.mockito_kotlin.isA
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -18,7 +19,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.runners.MockitoJUnitRunner
+import org.mockito.junit.MockitoJUnitRunner
 import rx.schedulers.Schedulers
 
 @RunWith(MockitoJUnitRunner::class)
@@ -51,7 +52,7 @@ class OperationActionSubscriberUnitTest {
     fun successViewTest() {
         performOperation { TEST_VALUE }
 
-        verify(mockedProgressView).showProgress(isA())
+        verify(mockedProgressView, atLeastOnce()).showProgress(isA())
         verify(mockedProgressView).onProgressChanged(0)
         verify(mockedProgressView).hideProgress()
         verify(mockedSuccessView).showSuccess(isA())
@@ -62,7 +63,7 @@ class OperationActionSubscriberUnitTest {
     fun errorViewTest() {
         performOperation { throw Exception("FAIL") }
 
-        verify(mockedProgressView).showProgress(isA())
+        verify(mockedProgressView, atLeastOnce()).showProgress(isA())
         verify(mockedProgressView).onProgressChanged(0)
         verify(mockedProgressView).hideProgress()
         verify(mockedErrorView).showError(isA(), isA())
